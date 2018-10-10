@@ -143,9 +143,9 @@ if [ -z "${KARAF_ASSEMBLY}" ]; then
   fi
   pushd ${ARTIFACT_DIR} &> /dev/null
   # there should be only one *.zip in ${ARTIFACT_DIR}
-  NUM_ARCHIVE_FILES=`ls -1 | grep "^.*.zip$" | wc -l`
+  NUM_ARCHIVE_FILES=`ls -1 | grep "^.*.tar.gz$" | wc -l`
   if [ $NUM_ARCHIVE_FILES -eq 1 ]; then
-    KARAF_ASSEMBLY=`ls -1 *.zip`
+    KARAF_ASSEMBLY=`ls -1 *.tar.gz`
   elif [ `find . -type f -name karaf | grep "^.*\/bin\/karaf$" | wc -l` -eq 1 ]; then
     #
     # unpacked assembly in a subdirectory
@@ -158,7 +158,7 @@ if [ -z "${KARAF_ASSEMBLY}" ]; then
     mv ${KARAF_ASSEMBLY_DIR} ${DEPLOYMENTS_DIR}
   else
     echo "Directory ${ARTIFACT_DIR} contains `ls ${ARTIFACT_DIR}`"
-    error_exit "Missing, or more than one, assembly or archive file *.zip in ${ARTIFACT_DIR}"
+    error_exit "Missing, or more than one, assembly or archive file *.tar.gz in ${ARTIFACT_DIR}"
   fi
   popd &> /dev/null
 fi
@@ -170,8 +170,8 @@ if [ -z ${KARAF_ASSEMBLY_DIR} ]; then
   fi
 
   # extract custom assembly to DEPLOY_DIR
-  unzip "$KARAF_ASSEMBLY_ARCHIVE" -d ${DEPLOYMENTS_DIR}
-  KARAF_ASSEMBLY_DIR=${KARAF_ASSEMBLY_ARCHIVE%.zip}
+  tar xzvf "$KARAF_ASSEMBLY_ARCHIVE" -d ${DEPLOYMENTS_DIR}
+  KARAF_ASSEMBLY_DIR=${KARAF_ASSEMBLY_ARCHIVE%.tar.gz}
 fi
 ln -s "${DEPLOYMENTS_DIR}/${KARAF_ASSEMBLY_DIR##*/}" "${DEPLOYMENTS_DIR}/karaf"
 
