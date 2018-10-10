@@ -1,4 +1,4 @@
-FROM centos:7.5.1804
+FROM base-centos7
 
 MAINTAINER Dhiraj Bokde <dhirajsb@gmail.com>
 
